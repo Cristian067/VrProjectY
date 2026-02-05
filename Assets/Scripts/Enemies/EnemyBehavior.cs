@@ -32,6 +32,8 @@ public class EnemyBehavior : MonoBehaviour
 
     public MeshRenderer meshRenderer;
 
+    private bool dead = false;
+
     Color colorOg;
 
     // Start is called before the first frame update
@@ -97,7 +99,7 @@ public class EnemyBehavior : MonoBehaviour
                 }
 
             }
-            if (transform.position.z <= -5.5f)
+            if (transform.position.z <= -7.5f)
             {
                 Destroy(gameObject);
             }
@@ -142,10 +144,11 @@ public class EnemyBehavior : MonoBehaviour
         animator.SetTrigger("hurt");
         //StartCoroutine(HurtVisual());
 
-        if (life <= 0)
+        if (life <= 0 && !dead)
         {
+            dead = true;
             GameObject point = Instantiate(pointGo,transform.position,Quaternion.Euler(0, 180, 0));
-            point.GetComponent<Points>().ChangePointsValue(setPointValue);
+            point.GetComponent<Item>().ChangePointsValue(setPointValue);
             Destroy(gameObject);
         }
     }

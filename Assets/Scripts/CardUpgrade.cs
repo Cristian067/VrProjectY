@@ -65,24 +65,21 @@ public class CardUpgrade : MonoBehaviour
         //    enemyUpgrade = null;
         //}
         
-
-        if (allyUpgrade.type == UpgradeSO.UpgradeType.Effect)
-        {
-            //enemyUpgrade = null;
-            allyText.text = allyUpgrade.description;
-            enemyText.text = "The boss " + enemyUpgrade.description;
-
-        }
-        else if (allyUpgrade.type == UpgradeSO.UpgradeType.Special)
+        if (allyUpgrade.type == UpgradeSO.UpgradeType.Special)
         {
             allyText.text = allyUpgrade.description;
             enemyUpgrade = null;
+            enemyText.text = "";
         }
         else
         {
-            allyText.text = "You " + allyUpgrade.description;
-            enemyText.text = "The boss " + enemyUpgrade.description;
+            //enemyUpgrade = null;
+            allyText.text = allyUpgrade.description;
+            enemyText.text = enemyUpgrade.description;
+
         }
+         
+
         
 
 
@@ -97,9 +94,9 @@ public class CardUpgrade : MonoBehaviour
     
     public void Choosed()
     {
-        GameManager.instance.AdquireUpgrade(0,allyUpgrade);
-        GameManager.instance.AdquireUpgrade(1, enemyUpgrade);
-        UpgradesManager.instance.UnDisplayeUpgrades();
+        UpgradesManager.instance.AdquireUpgrade(allyUpgrade, enemyUpgrade);
+        //GameManager.instance.AdquireUpgrade(1, enemyUpgrade);
+        UIManager.instance.UnDisplayeUpgrades();
     }
 
 

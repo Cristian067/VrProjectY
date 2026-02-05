@@ -74,10 +74,18 @@ public class DialoguesManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(dialogues[0].dialogueName == "Start")
+        if (dialogues.Length < 1)
         {
-            StartDialogue(0);
+            Debug.Log("There is no dialogues");
         }
+        else if (dialogues[0].dialogueName == "Start")
+        {
+            StartDialogue("Start");
+        }
+
+        
+        
+        
     }
 
     // Update is called once per frame
@@ -86,7 +94,7 @@ public class DialoguesManager : MonoBehaviour
 
         if (onDialogue)
         {
-            if (Input.GetButtonDown("Submit"))
+            if (OVRInput.GetDown(OVRInput.RawButton.A,OVRInput.Controller.RTouch))
             {
                 dialogues[currentDialogue].NextText();
             }

@@ -1,23 +1,50 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
+
 using System.IO;
-using Unity.VisualScripting;
+using System.Net;
+using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 
 
 
-
-
-
-public class UpgradeTypes
+[Serializable]
+public class PlayerStats 
 {
-    public enum Types
-    {
-        StatModification,
-    }
+
+    public float damage;
+    public float speed;
+
+    public float pickupRange;
+
+
+
 }
+
+
+public class PostData
+{
+
+    public string api_token = "ZHVxZUtGF4E0wzz0400BRy8imjHDgZPmL5m5UD5VYBUCstloOUH2sSbbS9ef";
+    public string name;
+    public int puntuacion;
+   
+}
+
+
+
+
+
+// public class UpgradeTypes
+// {
+//     public enum Types
+//     {
+//         StatModification,
+//     }
+// }
 
 public class GameManager : MonoBehaviour
 {
@@ -30,7 +57,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerController playerScript;
 
     [SerializeField] private int lives = 3;
-    [SerializeField] private int maxLives = 6;
+    [SerializeField] public int maxLives { get; private set; } = 6;
+    [SerializeField] public float specials = 2;
+    [SerializeField] public int maxSpecials { get; private set; } = 5;
+
     [SerializeField] private float specialCharge;
 
     [SerializeField] private int pointsForUpgrade;
@@ -42,19 +72,27 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject barrierRechargeParticles;
     [SerializeField] private float barrierCooldown;
 
-    [Header("Base Stats")]
-    [SerializeField] private float damageBase = 1;
-    [SerializeField] private float speedBase = 8;
-
-    [Header("Stats")] 
-    [SerializeField] private float damage = 1;
-    [SerializeField] private float speed = 8;
 
 
-    [SerializeField] private List<UpgradeSO> upgrades;
-    [SerializeField] private List<UpgradeSO> enemyUpgrades;
+    public PlayerStats baseStats;
+    public PlayerStats modStats;
+    private PlayerStats finalStats = new PlayerStats();
 
-    [SerializeField] private UpgradeSO special;
+    // [Header("Base Stats")]
+    // [SerializeField] private float damageBase = 1;
+    // [SerializeField] private float speedBase = 8;
+
+    // [Header("Stats")] 
+    // [SerializeField] private float damage = 1;
+    // [SerializeField] private float speed = 8;
+
+
+    // [SerializeField] private List<UpgradeSO> upgrades;
+    // [SerializeField] private List<UpgradeSO> enemyUpgrades;
+
+
+        public string bearerToken;
+
 
     private float timeScaleSaved;
 
@@ -76,17 +114,30 @@ private string pathUserData = "save/UserData.json";
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 1;
 
+        StartCoroutine(GetFromApi("https://phpstack-1076337-5399863.cloudwaysapps.com/api/classification/ZHVxZUtGF4E0wzz0400BRy8imjHDgZPmL5m5UD5VYBUCstloOUH2sSbbS9ef"));
+        Time.timeScale = 1;
+        //Win();
 
         UIManager.instance.RefreshStatsUi();
+        ReloadStats();
+
+        try
+        {
+            playerScript = GameObject.Find("Player").GetComponent<PlayerController>();
+        }
+        catch
+        {
+            Debug.LogWarning("No existe player");
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (Input.GetButtonDown("Pause") && !DialoguesManager.instance.IsOnDialogue() ||Input.GetButtonDown("Pause") && !paused)
+        if (Input.GetButtonDown("Pause") && !paused )//Input.GetButtonDown("Pause") && !DialoguesManager.instance.IsOnDialogue() ||Input.GetButtonDown("Pause") && !paused)
         {
             Pause(true);
         }
@@ -97,40 +148,62 @@ private string pathUserData = "save/UserData.json";
     public void ReloadStats()
     {
 
-        damage = damageBase;
-        speed = speedBase;
+        // finalStats.damage = baseStats.damage;
+        // finalStats.speed = baseStats.speed;
 
 
+        if (UpgradesManager.instance.upgrades.Contains(UpgradesManager.instance.effects.barrier) && !barrierInRecharge)
+        {
+            barrier.SetActive(true);
+        }
 
-
-        foreach (UpgradeSO upgrade in upgrades)
+        foreach (UpgradeSO upgrade in UpgradesManager.instance.upgrades)
         {
             if (upgrade.type == UpgradeSO.UpgradeType.StatModification)
             {
                 if (upgrade.modify == UpgradeSO.StatToModify.Damage)
                 {
-                    damage += upgrade.valueToAdd.ConvertTo<int>();
+                    modStats.damage += upgrade.valueToAdd;
                 }
                 else if (upgrade.modify == UpgradeSO.StatToModify.Speed)
                 {
-                    speed += upgrade.valueToAdd;
+                    modStats.speed += upgrade.valueToAdd;
+                }
+                else if (upgrade.modify == UpgradeSO.StatToModify.PickupRange)
+                {
+                    modStats.pickupRange += upgrade.valueToAdd;
                 }
             }
         }
-        if (damage <= 0)
-        {
-            damage = 1;
-        }
-        if (speed <= 0)
-        {
-            speed = 0.1f;
-        }
 
-        if (upgrades.Contains(UpgradesManager.instance.effects.barrier) && !barrier.active && !barrierInRecharge)
+        finalStats.damage = baseStats.damage + modStats.damage;
+        finalStats.speed = baseStats.speed + modStats.speed;
+        finalStats.pickupRange = baseStats.pickupRange + modStats.pickupRange;
+
+        if (finalStats.damage <= 0)
+        {
+            finalStats.damage = 1;
+        }
+        if (finalStats.speed <= 0)
+        {
+            finalStats.speed = 0.1f;
+        }
+        try
+        {
+            GameObject.Find("Magnet").GetComponent<Magnet>().ChangeMagnetRange(finalStats.pickupRange);
+        }
+        catch
+        {
+            Debug.Log("No se encuentra el magnet");
+        }
+        
+
+
+        if (UpgradesManager.instance.upgrades.Contains(UpgradesManager.instance.effects.barrier) && !barrier.active && !barrierInRecharge)
         {
             barrier.SetActive(true);
         }
-        else if (upgrades.Contains(UpgradesManager.instance.effects.barrier) && barrierInRecharge)
+        else if (UpgradesManager.instance.upgrades.Contains(UpgradesManager.instance.effects.barrier) && barrierInRecharge)
         {
             barrierInRecharge = false;
         }
@@ -139,7 +212,8 @@ private string pathUserData = "save/UserData.json";
 
     public void Pause(bool usePanel = false)
     {
-        
+        //Cursor.lockState = CursorLockMode.None;
+        //Cursor.visible = true;
         paused = true;
         timeScaleSaved = Time.timeScale;
         //Time.timeScale = 0;
@@ -154,7 +228,8 @@ private string pathUserData = "save/UserData.json";
 
     public void Unpause(bool useSaved = false)
     {
-        
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         if (useSaved)
         {
             Time.timeScale = timeScaleSaved;
@@ -182,6 +257,10 @@ private string pathUserData = "save/UserData.json";
 
     public void Heal(int lifes)
     {
+        if (lives >= maxLives)
+        {
+            return;
+        }
         lives += lifes;
         UIManager.instance.RefreshStatsUi();
     }
@@ -195,18 +274,18 @@ private string pathUserData = "save/UserData.json";
 
     public float GetSpeed()
     {
-        return speed;
+        return finalStats.speed;
     }
 
     public void SetSpeed(float newSpeed)
     {
-        speed = newSpeed;
+        finalStats.speed = newSpeed;
     }
 
-    public UpgradeSO GetSpecial()
-    {
-        return special;
-    }
+    //public UpgradeSO GetSpecial()
+    //{
+    //    return special;
+    //}
 
     public void AddPoints(int pointsToAdd)
     {
@@ -221,43 +300,26 @@ private string pathUserData = "save/UserData.json";
         }
     }
 
-    public void AdquireUpgrade(int side, UpgradeSO upgrade)
+    public void RechargeSpecial(float recharge)
     {
-        if (upgrade == null)
+
+        if (specials >= maxSpecials)
         {
             return;
         }
-
-        if (upgrade.type == UpgradeSO.UpgradeType.Special)
-        {
-            if (upgrade != null)
-            {
-                special = upgrade;
-            }
-            
-        }
         else
         {
-            if (side == 0)
-            {
-                upgrades.Add(upgrade);
+            specials += recharge;
+            UIManager.instance.RefreshStatsUi();
 
-            }
-
-            else
-            {
-                enemyUpgrades.Add(upgrade);
-
-            }
         }
 
-        ReloadStats();
-        UIManager.instance.RefreshStatsUi();
+        //baseStats.specialC += recharge.ConvertTo<int>();
     }
 
     public float GetPlayerDamage()
     {
-        return damage;
+        return finalStats.damage;
     }
 
     public int GetPlayerLives()
@@ -281,14 +343,14 @@ private string pathUserData = "save/UserData.json";
     }
 
 
-    public List<UpgradeSO> GetUpgrades()
-    {
-        return upgrades;
-    }
-    public List<UpgradeSO> GetEnemyUpgrades()
-    {
-        return enemyUpgrades;
-    }
+    //public List<UpgradeSO> GetUpgrades()
+    //{
+    //    return upgrades;
+    //}
+    //public List<UpgradeSO> GetEnemyUpgrades()
+    //{
+    //    return enemyUpgrades;
+    //}
     
 
     public void DestroyBarrier()
@@ -311,16 +373,91 @@ private string pathUserData = "save/UserData.json";
         
     }
 
+    private IEnumerator GetFromApi(string url)
+    {
+        UnityWebRequest request = UnityWebRequest.Get(url);
 
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Respuesta: " + request.downloadHandler.text);
+        }
+        else
+        {
+            Debug.LogError("Error: " + request.error);
+        }
+    }
+
+
+    
+
+    private IEnumerator PostAPi()
+    {
+        PostData postData= new PostData();
+        postData.name = "a";
+        postData.puntuacion = totalPoints;
+        string jsonHS = JsonUtility.ToJson(postData);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonHS);
+
+
+        // using(var webRequest = new UnityWebRequest("g", "POST"))
+        // {
+        //     webRequest.uploadHandler = new UploadHandlerRaw(bytes);
+        //     webRequest.downloadHandler = new DownloadHandlerBuffer();
+        //     webRequest.certificateHandler = new ForceAcceptAllCertificates();
+        //     webRequest.SetRequestHeader("accept", "application/json");
+        //     webRequest.SetRequestHeader("Content-Type", "application/json");
+
+        //     // Btw afaik you can simply
+        //     await  webRequest.SendWebRequest();
+
+        //     responseCode = (HttpStatus)webRequest.responseCode;
+        //}
+
+        var request = new UnityWebRequest("https://phpstack-1076337-5399863.cloudwaysapps.com/api/classification");
+        request.method = UnityWebRequest.kHttpVerbPOST;
+        
+        request.uploadHandler = (UploadHandler) new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.SendWebRequest();
+        //Debug.Log(request.uploadHandler.ToString());
+        Debug.Log("Status Code: " + request.responseCode);
+
+
+
+
+
+
+
+    
+        //UnityWebRequest request = UnityWebRequest.Post("https://phpstack-1076337-5399863.cloudwaysapps.com/api/classification",jsonHS); //new UnityWebRequest("https://phpstack-1076337-5399863.cloudwaysapps.com/game/classification/ZHVxZUtGF4E0wzz0400BRy8imjHDgZPmL5m5UD5VYBUCstloOUH2sSbbS9ef", "POST");
+
+        // yield return request.SendWebRequest();
+
+        // if (request.result == UnityWebRequest.Result.Success)
+        // {
+        //     Debug.Log("Respuesta: " + request.downloadHandler.text);
+        // }
+        // else
+        // {
+        //     Debug.LogError("Error: " + request.error);
+        // }
+
+    }
+
+    [ContextMenu("Win Game")]
     public void Win()
     {
-
+        File.WriteAllText(pathUserData, JsonUtility.ToJson(new Data(),true));
         Data data= new Data();
         data = RegistryUpgrades(data);
         data.levelsCompleted[levelNumber] = true;
         data.levelsHighScore[levelNumber] = totalPoints;
-    
-        
+
+        StartCoroutine(PostAPi());
 
         string json = JsonUtility.ToJson(data,true);
         File.WriteAllText(pathUserData, json);
@@ -332,10 +469,15 @@ private string pathUserData = "save/UserData.json";
     private Data RegistryUpgrades(Data data)
     {
         //Data data = new Data();
+    
+
         string json = File.ReadAllText(pathUserData);
         data = JsonUtility.FromJson<Data>(json);
+        
+        
+        
 
-        foreach (var upgrade in upgrades)
+        foreach (var upgrade in UpgradesManager.instance.upgrades)
         {
             if (!data.discoveredUpgrades.Contains(upgrade.name))
             {
@@ -365,7 +507,15 @@ private string pathUserData = "save/UserData.json";
 
     public bool isBarrierActive()
     {
-        return !barrierInRecharge;
+        if (barrier.active && !barrierInRecharge)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+            
     }
 
     public void SetSpecialCooldown(float time)
