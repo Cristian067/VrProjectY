@@ -35,6 +35,7 @@ public class MainManager : MonoBehaviour
 
 
     [SerializeField] private GameObject[] menusPanel;
+    [SerializeField] private GameObject[] menusPanelGo;
 
     [SerializeField] private GameObject lockedLevelPanel;
 
@@ -70,7 +71,13 @@ public class MainManager : MonoBehaviour
             go.SetActive(false);
         }
 
+        foreach (GameObject go in menusPanelGo)
+        {
+            go.SetActive(false);
+        }
+
         menusPanel[panel].SetActive(true);
+        menusPanelGo[panel].SetActive(true);
 
     }
 
