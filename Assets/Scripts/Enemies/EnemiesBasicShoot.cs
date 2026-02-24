@@ -55,7 +55,7 @@ public class EnemyShoot : MonoBehaviour
         }
         if (targetShoot)
         {
-            Transform playerTransform = GameObject.Find("Player").transform;
+            Transform playerTransform = GameObject.Find("hitbox").transform;
 
             Vector3 direction = transform.position - playerTransform.position;
 

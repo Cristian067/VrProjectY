@@ -246,7 +246,7 @@ private string pathUserData = "save/UserData.json";
     {
         lives--;
         UIManager.instance.RefreshStatsUi();
-        StartCoroutine(playerScript.HitInCooldown());
+        //StartCoroutine(playerScript.HitInCooldown());
         if (lives == 0)
         {
 

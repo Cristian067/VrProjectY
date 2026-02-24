@@ -94,19 +94,25 @@ public class ShootVR : MonoBehaviour
         if (charging)
         {
             chargeBullet.SetActive(true);
-            chargeBullet.transform.localScale = new Vector3(charge,charge,charge);
+            chargeBullet.transform.localScale = new Vector3(charge/6,charge/6,charge/6);
 
             charge += Time.deltaTime*0.5f;
+            Debug.Log(charge);
+
+            if (charge > 1)
+            {
+                charge = 1;
+            }
 
         }
 
         else
         {
             
-            GameObject bulletOut = Instantiate(bullet, transform.position, Quaternion.Euler(new Vector3(transform.rotation.x,0,transform.rotation.z)));
+            GameObject bulletOut = Instantiate(bullet, transform.position, Quaternion.identity);
             chargeBullet.SetActive(false);
             bulletOut.GetComponentInChildren<BulletsBehavior>().damage = GameManager.instance.GetPlayerDamage() * charge;
-            bulletOut.transform.localScale = new Vector3(charge/2, charge/2,charge/2);
+            bulletOut.transform.localScale = new Vector3(charge/4, charge/4,charge/4);
 
             Destroy(bulletOut, 5f);
             charge =0;

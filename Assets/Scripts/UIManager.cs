@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider upgradeProgressSlider;
 
 
+    [SerializeField] private GameObject canvasWithPanels;
+
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject pausePanel;
@@ -87,12 +89,14 @@ public class UIManager : MonoBehaviour
 
     public void DisplayWinPanel()
     {
+        canvasWithPanels.SetActive(true);
         winPanel.SetActive(true);
         buttonWinPanel.Select();
     }
 
     public void DisplayLosePanel()
     {
+        canvasWithPanels.SetActive(true);
         losePanel.SetActive(true);
         buttonLosePanel.Select();
     }
