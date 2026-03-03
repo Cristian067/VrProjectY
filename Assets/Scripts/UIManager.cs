@@ -180,7 +180,7 @@ public class UIManager : MonoBehaviour
 
             //Debug.Log(allyUpgrades[i]);
             //Debug.Log(enemyUpgrades[i]);
-
+            upgradesContainer.transform.position = GameObject.Find("Player").transform.position + new Vector3(0,0,2);
             GameObject card = Instantiate(UpgradePrefab, upgradesContainer.transform);
             card.GetComponent<CardUpgrade>().Set(ally[i], enemy[i]);
 

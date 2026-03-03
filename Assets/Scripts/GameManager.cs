@@ -7,6 +7,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 
 
@@ -78,6 +79,9 @@ public class GameManager : MonoBehaviour
     public PlayerStats modStats;
     private PlayerStats finalStats = new PlayerStats();
 
+
+    [SerializeField] private float hitCooldown;
+
     // [Header("Base Stats")]
     // [SerializeField] private float damageBase = 1;
     // [SerializeField] private float speedBase = 8;
@@ -91,7 +95,7 @@ public class GameManager : MonoBehaviour
     // [SerializeField] private List<UpgradeSO> enemyUpgrades;
 
 
-        public string bearerToken;
+    public string bearerToken;
 
 
     private float timeScaleSaved;
@@ -246,7 +250,7 @@ private string pathUserData = "save/UserData.json";
     {
         lives--;
         UIManager.instance.RefreshStatsUi();
-        //StartCoroutine(playerScript.HitInCooldown());
+        StartCoroutine(HitInCooldown());
         if (lives == 0)
         {
 
@@ -254,6 +258,17 @@ private string pathUserData = "save/UserData.json";
             Lose();
         }
     }
+
+    public IEnumerator HitInCooldown()
+    {
+        var hitbox = GameObject.Find("hitbox").GetComponent<Collider>();
+        hitbox.enabled = false;
+        //PlayerMaterialGO.GetComponent<MeshRenderer>().material.color = new Vector4(PlayerMaterialGO.GetComponent<MeshRenderer>().material.color.r, PlayerMaterialGO.GetComponent<MeshRenderer>().material.color.g, PlayerMaterialGO.GetComponent<MeshRenderer>().material.color.b, 0.30f);
+        yield return new WaitForSeconds(hitCooldown);
+        hitbox.enabled = true;
+        //PlayerMaterialGO.GetComponent<MeshRenderer>().material.color = new Vector4(PlayerMaterialGO.GetComponent<MeshRenderer>().material.color.r, PlayerMaterialGO.GetComponent<MeshRenderer>().material.color.g, PlayerMaterialGO.GetComponent<MeshRenderer>().material.color.b, 1);
+    }
+
 
     public void Heal(int lifes)
     {

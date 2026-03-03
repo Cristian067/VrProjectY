@@ -65,14 +65,18 @@ public class Item : MonoBehaviour
         {
             Debug.Log("No hay Gamemanager");
         }
-        
+
         if (collected)
         {
-            transform.Translate(-(GameObject.Find("Player").transform.position - transform.position).normalized * speed * Time.deltaTime);
+
+            Vector3 direction = -(GameObject.Find("collectHitbox").transform.position - transform.position).normalized;
+
+            transform.Translate(new Vector3(direction.x,0,direction.z) * speed * Time.deltaTime);
         }
         else
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
-
+        {
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        }
 
     }
 
