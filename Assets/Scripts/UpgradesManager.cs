@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Oculus.Interaction.Locomotion;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -254,6 +255,12 @@ public class UpgradesManager : MonoBehaviour
     [ContextMenu("Display upgrades screen")]
     public void DisplayUpgrades()
     {
+        GameObject.Find("PlayerController").GetComponent<FirstPersonLocomotor>().enabled = false;
+        GameObject.Find("PlayerController").GetComponent<FirstPersonLocomotor>().Acceleration = 0;
+        GameObject.Find("PlayerController").GetComponent<FirstPersonLocomotor>().SpeedFactor = 0;
+        GameObject.Find("PlayerController").GetComponent<Rigidbody>().linearVelocity = Vector2.zero;
+        GameObject.Find("PlayerController").GetComponent<FirstPersonLocomotor>().enabled = true;
+
         GameManager.instance.Pause();
         UpgradeSO[] allyUpgrades = new UpgradeSO[3];
         UpgradeSO[] enemyUpgrades = new UpgradeSO[3];
@@ -361,6 +368,9 @@ public class UpgradesManager : MonoBehaviour
 
         GameManager.instance.ReloadStats();
         UIManager.instance.RefreshStatsUi();
+        GameObject.Find("PlayerController").GetComponent<FirstPersonLocomotor>().Acceleration = 10;
+        GameObject.Find("PlayerController").GetComponent<FirstPersonLocomotor>().SpeedFactor = 20;
+
     }
 
 

@@ -175,12 +175,16 @@ public class UIManager : MonoBehaviour
 
     public void SendUpgrades(UpgradeSO[] ally, UpgradeSO[] enemy)
     {
+
+        upgradesContainer.transform.position = GameObject.Find("Player").transform.position + new Vector3(0,0.75f,0.6f);
+
+
         for (int i = 0; i < 3; i++)
         {
 
             //Debug.Log(allyUpgrades[i]);
             //Debug.Log(enemyUpgrades[i]);
-            upgradesContainer.transform.position = GameObject.Find("Player").transform.position + new Vector3(0,1,2);
+            
             GameObject card = Instantiate(UpgradePrefab, upgradesContainer.transform);
             card.GetComponent<CardUpgrade>().Set(ally[i], enemy[i]);
 
@@ -188,6 +192,17 @@ public class UIManager : MonoBehaviour
             if (i == 1)
             {
                 card.GetComponent<Button>().Select();
+            }
+
+            if (i == 0)
+            {
+                card.transform.rotation = Quaternion.Euler(0, -45,0);
+                card.transform.position = card.transform.position - new Vector3(-0.2f,0,0.2f);
+            }
+            if (i == 2)
+            {
+                card.transform.rotation = Quaternion.Euler(0, 45,0);
+                card.transform.position = card.transform.position - new Vector3(0.2f,0,0.2f);
             }
             
         }
