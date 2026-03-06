@@ -58,6 +58,7 @@ public class UpgradeSO : ScriptableObject
 
 
     [SerializeField] public SpecialSO special;
+    [SerializeField] public Color orbColor;
 
 
 
@@ -66,8 +67,8 @@ public class UpgradeSO : ScriptableObject
 
     //     //PlayerController player = owner.GetComponent<PlayerController>();
 
-    
-        
+
+
     // }
 
 

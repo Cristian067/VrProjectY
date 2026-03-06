@@ -19,3 +19,4 @@ MonoBehaviour:
   modify: 0
   valueToAdd: 0
   special: {fileID: 11400000, guid: 7dd023aad3449254985e134db546674d, type: 2}
+  orbColor: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 0}

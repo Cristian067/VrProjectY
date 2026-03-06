@@ -369,7 +369,7 @@ public class UpgradesManager : MonoBehaviour
         GameManager.instance.ReloadStats();
         UIManager.instance.RefreshStatsUi();
         GameObject.Find("PlayerController").GetComponent<FirstPersonLocomotor>().Acceleration = 10;
-        GameObject.Find("PlayerController").GetComponent<FirstPersonLocomotor>().SpeedFactor = 20;
+        GameObject.Find("PlayerController").GetComponent<FirstPersonLocomotor>().SpeedFactor = 30;
 
     }
 

@@ -78507,6 +78507,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 34542084}
   m_CullTransparentMesh: 1
+--- !u!114 &41535474 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5038717311868355907, guid: bd4855d1e1b6f12469d8a4a0c4cd57a6, type: 3}
+  m_PrefabInstance: {fileID: 1078427617}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &41535475 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5376932749385807473, guid: bd4855d1e1b6f12469d8a4a0c4cd57a6, type: 3}
+  m_PrefabInstance: {fileID: 1078427617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &50242876
 GameObject:
   m_ObjectHideFlags: 0
@@ -169560,7 +169576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7256786141335147897, guid: 991a29cd6c4c7474990fee12a8d29320, type: 3}
       propertyPath: dialogues.Array.data[7].dialogues.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7256786141335147897, guid: 991a29cd6c4c7474990fee12a8d29320, type: 3}
       propertyPath: dialogues.Array.data[8].dialogues.Array.size
@@ -169660,6 +169676,10 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 237d5e1884b4c82458b6220be13bfe22, type: 2}
     - target: {fileID: 7256786141335147897, guid: 991a29cd6c4c7474990fee12a8d29320, type: 3}
       propertyPath: dialogues.Array.data[7].dialogues.Array.data[3].who
+      value: 
+      objectReference: {fileID: 11400000, guid: 237d5e1884b4c82458b6220be13bfe22, type: 2}
+    - target: {fileID: 7256786141335147897, guid: 991a29cd6c4c7474990fee12a8d29320, type: 3}
+      propertyPath: dialogues.Array.data[7].dialogues.Array.data[4].who
       value: 
       objectReference: {fileID: 11400000, guid: 237d5e1884b4c82458b6220be13bfe22, type: 2}
     - target: {fileID: 7256786141335147897, guid: 991a29cd6c4c7474990fee12a8d29320, type: 3}
@@ -169791,6 +169811,10 @@ PrefabInstance:
       propertyPath: dialogues.Array.data[7].dialogues.Array.data[3].text
       value: Thats because your link with the negative energy, you used it to get
         your upgrade, so who uses the negative energy will have an upgrade too
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256786141335147897, guid: 991a29cd6c4c7474990fee12a8d29320, type: 3}
+      propertyPath: dialogues.Array.data[7].dialogues.Array.data[4].text
+      value: And to see what upgrades you have just hold the Y button
       objectReference: {fileID: 0}
     - target: {fileID: 7256786141335147897, guid: 991a29cd6c4c7474990fee12a8d29320, type: 3}
       propertyPath: dialogues.Array.data[8].dialogues.Array.data[0].text
@@ -171035,7 +171059,8 @@ MonoBehaviour:
   livesText: {fileID: 1078427620}
   specialText: {fileID: 1078427619}
   totalPointsText: {fileID: 1078427623}
-  upgradesListText: {fileID: 654529334}
+  upgradesListText: {fileID: 41535474}
+  upgradesListPanel: {fileID: 41535475}
   currentSpecialText: {fileID: 1078427621}
   upgradeProgressSlider: {fileID: 1078427622}
   canvasWithPanels: {fileID: 1078427630}

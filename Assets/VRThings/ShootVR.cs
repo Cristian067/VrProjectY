@@ -26,10 +26,22 @@ public class ShootVR : MonoBehaviour
         //     Instantiate(bullet,transform.position,transform.rotation);
         // }
 
+
+        if (OVRInput.GetDown(OVRInput.Button.Four))
+        {
+            UIManager.instance.DisplayUpgrades(true);
+
+        }
+        else if (OVRInput.GetUp(OVRInput.Button.Four))
+        {
+            UIManager.instance.DisplayUpgrades(false);
+        }
+
         if (OVRInput.GetDown(OVRInput.Button.Two) && UpgradesManager.instance.special != null && !GameManager.instance.specialInCooldown && GameManager.instance.specials > 0)
         {
             specialOrb.SetActive(true);
-            specialOrb.transform.localPosition = new Vector3(-14,-102,0);
+            specialOrb.GetComponent<Renderer>().material.color = UpgradesManager.instance.special.orbColor;
+            specialOrb.transform.localPosition = new Vector3(-14, -102, 0);
         }
         //if (GameManager.instance.specials <= 0)
         //{
@@ -85,7 +97,9 @@ public class ShootVR : MonoBehaviour
     
     
     }
+    
 
+    
 
     public void UnDisplaySpecialOrb()
     {
@@ -107,8 +121,8 @@ public class ShootVR : MonoBehaviour
     private void DoubleShoot()
     {
         
-        GameObject bulletOut = Instantiate(bullet, transform.position + new Vector3(0.4f,0,0), Quaternion.Euler(0, hand.transform.rotation.y, hand.transform.rotation.z));
-        GameObject bulletOut2 = Instantiate(bullet, transform.position + new Vector3(-0.4f,0,0), Quaternion.Euler(0, hand.transform.rotation.y, hand.transform.rotation.z));
+        GameObject bulletOut = Instantiate(bullet, transform.position + new Vector3(0.4f,0,0), hand.transform.rotation);
+        GameObject bulletOut2 = Instantiate(bullet, transform.position + new Vector3(-0.4f,0,0), hand.transform.rotation);
         //bulletOut.transform.rotation = Quaternion.Euler(0, bulletOut.transform.rotation.y, bulletOut.transform.rotation.z);
         //bulletOut2.transform.rotation = Quaternion.Euler(0, bulletOut2.transform.rotation.y, bulletOut2.transform.rotation.z);
         bulletOut.GetComponent<BulletsBehavior>().damage = GameManager.instance.GetPlayerDamage() * 0.75f;
@@ -137,14 +151,14 @@ public class ShootVR : MonoBehaviour
         if (charging)
         {
             chargeBullet.SetActive(true);
-            chargeBullet.transform.localScale = new Vector3(charge/6,charge/6,charge/6);
+            chargeBullet.transform.localScale = new Vector3(charge/18,charge/18,charge/18);
 
-            charge += Time.deltaTime*0.5f;
+            charge += Time.deltaTime*1f;
             Debug.Log(charge);
 
-            if (charge > 1)
+            if (charge > 3)
             {
-                charge = 1;
+                charge = 3;
             }
 
         }
@@ -156,7 +170,7 @@ public class ShootVR : MonoBehaviour
             //bulletOut.transform.rotation = Quaternion.Euler(0, bulletOut.transform.rotation.y, bulletOut.transform.rotation.z);
             chargeBullet.SetActive(false);
             bulletOut.GetComponentInChildren<BulletsBehavior>().damage = GameManager.instance.GetPlayerDamage() * charge;
-            bulletOut.transform.localScale = new Vector3(charge/4, charge/4,charge/4);
+            bulletOut.transform.localScale = new Vector3(charge/8, charge/8,charge/8);
 
             Destroy(bulletOut, 5f);
             charge =0;

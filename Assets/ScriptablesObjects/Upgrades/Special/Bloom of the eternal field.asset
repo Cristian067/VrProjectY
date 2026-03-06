@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 803bb176333f2fa448652c2443a9a3df, type: 3}
   m_Name: Bloom of the eternal field
   m_EditorClassIdentifier: 
+  whoToAdd: 0
   type: 2
   alignment: 0
   description: The ability to stop the flow of time. Everyone who used this said
@@ -19,3 +20,4 @@ MonoBehaviour:
   modify: 0
   valueToAdd: 0
   special: {fileID: 11400000, guid: 79e48c8d7a35bf34382dbfb69c0c088d, type: 2}
+  orbColor: {r: 0.3860254, g: 0.9150943, b: 0.26330543, a: 0}

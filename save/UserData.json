@@ -1,7 +1,7 @@
 {
     "levelsHighScore": [
         0,
-        1210,
+        1380,
         0,
         0,
         0,
@@ -202,12 +202,11 @@
         false
     ],
     "discoveredUpgrades": [
-        "MoreSpeed1",
-        "Barrier",
-        "Magic Mirror",
-        "Portal To Limitless",
-        "Powerful magnet",
+        "LessDamage",
+        "MoreDamage1",
         "LessSpeed",
-        "LessDamage"
+        "Magic Mirror",
+        "Powerful magnet",
+        "MoreSpeed1"
     ]
 }

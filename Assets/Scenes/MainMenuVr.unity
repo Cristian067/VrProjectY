@@ -611,7 +611,7 @@ MonoBehaviour:
   shape: 0
   curveRadius: 1
   overlapMask: 0
-  overlayType: 1
+  overlayType: 0
   _overlayEnabled: 1
 --- !u!1 &31250956
 GameObject:
@@ -5597,7 +5597,7 @@ MonoBehaviour:
   shape: 0
   curveRadius: 1
   overlapMask: 0
-  overlayType: 1
+  overlayType: 0
   _overlayEnabled: 1
 --- !u!114 &568844766
 MonoBehaviour:
@@ -9847,7 +9847,7 @@ MonoBehaviour:
   shape: 0
   curveRadius: 1
   overlapMask: 0
-  overlayType: 1
+  overlayType: 0
   _overlayEnabled: 1
 --- !u!114 &895273687
 MonoBehaviour:
@@ -10829,7 +10829,7 @@ MonoBehaviour:
   shape: 0
   curveRadius: 1
   overlapMask: 0
-  overlayType: 1
+  overlayType: 0
   _overlayEnabled: 1
 --- !u!114 &961399863
 MonoBehaviour:
@@ -11851,7 +11851,7 @@ MonoBehaviour:
   shape: 0
   curveRadius: 1
   overlapMask: 0
-  overlayType: 1
+  overlayType: 0
   _overlayEnabled: 1
 --- !u!114 &1088750927
 MonoBehaviour:
@@ -12448,7 +12448,7 @@ MonoBehaviour:
   shape: 0
   curveRadius: 1
   overlapMask: 0
-  overlayType: 1
+  overlayType: 0
   _overlayEnabled: 1
 --- !u!114 &1153743305
 MonoBehaviour:
@@ -12990,7 +12990,7 @@ MonoBehaviour:
   shape: 0
   curveRadius: 1
   overlapMask: 0
-  overlayType: 1
+  overlayType: 0
   _overlayEnabled: 1
 --- !u!114 &1194566261
 MonoBehaviour:
@@ -13432,6 +13432,14 @@ PrefabInstance:
       propertyPath: _centerEyeCamera
       value: 
       objectReference: {fileID: 998545478}
+    - target: {fileID: 4147102894439380630, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4147102894439380630, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+      propertyPath: _turnMethod
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4148778239110795873, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
       propertyPath: m_Name
       value: '[BuildingBlock] OVRInteractionComprehensive'
@@ -19561,7 +19569,7 @@ MonoBehaviour:
   shape: 0
   curveRadius: 1
   overlapMask: 0
-  overlayType: 1
+  overlayType: 0
   _overlayEnabled: 1
 --- !u!114 &1649567311
 MonoBehaviour:
@@ -23891,7 +23899,7 @@ MonoBehaviour:
   shape: 0
   curveRadius: 1
   overlapMask: 0
-  overlayType: 1
+  overlayType: 0
   _overlayEnabled: 1
 --- !u!114 &1981584154
 MonoBehaviour:
@@ -25726,7 +25734,7 @@ MonoBehaviour:
   shape: 0
   curveRadius: 1
   overlapMask: 0
-  overlayType: 1
+  overlayType: 0
   _overlayEnabled: 1
 --- !u!114 &2118574900
 MonoBehaviour:

@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
 
 
     [SerializeField] private TextMeshProUGUI upgradesListText;
+    [SerializeField] private GameObject upgradesListPanel;
     [SerializeField] private TextMeshProUGUI currentSpecialText;
 
     [SerializeField] private Slider upgradeProgressSlider;
@@ -74,6 +75,14 @@ public class UIManager : MonoBehaviour
 
     }
 
+
+    public void DisplayUpgrades(bool display)
+    {
+        
+        upgradesListPanel.SetActive(display);
+        
+
+    }
     public void DisplayBossThings(string name,float health)
     {
         bossThings.SetActive(true);
